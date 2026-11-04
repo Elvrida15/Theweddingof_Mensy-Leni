@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Undangan Pernikahan</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --green: #12302b;
+  --ivory: #f6f2ea;
+  --tint: #ece5d6;
+  --ink: #23312e;
+  --gold: #b89b5e;
+  --gold-soft: #d9c79c;
+  --muted: #6b7773;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background: var(--ivory);
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.65;
+}
+
+body.locked { overflow: hidden; }
+
+.script {
+  font-family: 'Pinyon Script', cursive;
+  font-weight: 400;
+}
+
+p { margin-bottom: 14px; }
+
+/* COVER */
+#cover {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--green);
+  color: var(--ivory);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: transform 1.1s ease;
+}
+
+#cover.open { transform: translateY(-100%); }
+
+#cover::before, #cover::after {
+  content: "";
+  position: absolute;
+  border: 1px solid var(--gold);
+  pointer-events: none;
+}
+
+#cover::before { inset: 18px; }
+#cover::after { inset: 28px; border-color: rgba(184,155,94,.45); }
+
+.cover-inner {
+  padding: 0 40px;
+  max-width: 560px;
+  position: relative;
+  z-index: 1;
+}
+
+.small {
+  color: var(--gold-soft);
+  letter-spacing: .18em;
+  font-size: 15px;
+}
+
+.cover-names {
+  font-size: clamp(54px,15vw,96px);
+  line-height: 1.05;
+  margin: 18px 0 8px;
+}
+
+.cover-names span {
+  display: block;
+  color: var(--gold);
+  font-size: .5em;
+}
+
+.guest {
+  margin-top: 34px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(184,155,94,.5);
+}
+
+.guest small {
+  display: block;
+  font-size: 15px;
+  color: var(--gold-soft);
+}
+
+.guest strong {
+  display: block;
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 12px 32px;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--ivory);
+  font: inherit;
+  font-size: 17px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: var(--gold);
+  color: var(--green);
+}
+
+.btn.dark {
+  color: var(--green);
+  border-color: var(--green);
+}
+
+/* BAGIAN HALAMAN */
+section {
+  padding: 84px 28px;
+  text-align: center;
+}
+
+.wrap {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.wide { max-width: 900px; }
+
+.dark-bg {
+  background: var(--green);
+  color: var(--ivory);
+}
+
+.tint { background: var(--tint); }
+
+h2 {
+  font-weight: 500;
+  font-size: 34px;
+  line-height: 1.2;
+  margin-bottom: 22px;
+}
+
+h2.script {
+  font-size: 52px;
+  color: var(--gold);
+}
+
+.divider {
+  width: 64px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 26px;
+}
+
+.muted { color: var(--muted); }
+.dark-bg .muted { color: var(--gold-soft); }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .9s ease, transform .9s ease;
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* HERO */
+#hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--green);
+  color: var(--ivory);
+}
+
+#hero .names {
+  font-size: clamp(60px,17vw,110px);
+  line-height: 1.05;
+}
+
+#hero .names em {
+  display: block;
+  color: var(--gold);
+  font-size: .5em;
+}
+
+#hero .date {
+  margin-top: 26px;
+  letter-spacing: .14em;
+  color: var(--gold-soft);
+}
+
+/* MEMPELAI */
+.ayat {
+  margin: 0 auto 26px;
+  max-width: 520px;
+  font-style: italic;
+}
+
+.ayat cite {
+  display: block;
+  margin-top: 6px;
+  color: var(--gold);
+}
+
+.couple {
+  display: grid;
+  gap: 40px;
+  margin-top: 34px;
+}
+
+.avatar {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  border: 1px solid var(--gold);
+  padding: 6px;
+  display: flex;
+}
+
+.avatar > * {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar .mono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--green);
+  color: var(--gold);
+  font-size: 58px;
+}
+
+.person .nm {
+  font-size: 44px;
+  color: var(--green);
+}
+
+.person .full {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.person p {
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.amp {
+  font-size: 48px;
+  color: var(--gold);
+}
+
+/* KELUARGA */
+.families {
+  display: grid;
+  gap: 26px;
+  margin-top: 30px;
+}
+
+.fam {
+  background: var(--ivory);
+  border: 1px solid var(--gold);
+  padding: 34px 22px;
+}
+
+.fam h3 {
+  font-size: 36px;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+
+.fam .parent {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.fam .and {
+  color: var(--gold);
+  font-size: 30px;
+}
+
+.fam .sib {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(184,155,94,.5);
+}
+
+.fam .sib small {
+  display: block;
+  color: var(--muted);
+}
+
+.fam .sib span { display: block; }
+
+.fam .note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* CERITA */
+.timeline {
+  text-align: left;
+  margin-top: 30px;
+  border-left: 1px solid var(--gold);
+  padding-left: 26px;
+}
+
+.tl {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.tl::before {
+  content: "";
+  position: absolute;
+  left: -32px;
+  top: 9px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.tl b { color: var(--gold-soft); }
+.tl h3 { font-size: 24px; }
+.tl p { color: var(--gold-soft); }
+
+/* COUNTDOWN */
+.count {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 26px;
+  color: var(--green);
+}
+
+.count div { min-width: 64px; }
+
+.count b {
+  display: block;
+  font-size: 46px;
+  line-height: 1;
+}
+
+.count span { font-size: 15px; }
+
+/* ACARA */
+.events {
+  display: grid;
+  gap: 28px;
+  margin-top: 30px;
+}
+
+.event {
+  border: 1px solid var(--gold);
+  padding: 34px 24px;
+}
+
+.event h3 {
+  font-size: 42px;
+  color: var(--green);
+}
+
+.event .when {
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.event .place { margin-top: 12px; }
+
+/* LOKASI */
+.locs {
+  display: grid;
+  gap: 36px;
+  margin-top: 30px;
+}
+
+.loc h3 {
+  font-size: 40px;
+  color: var(--green);
+}
+
+.loc iframe {
+  display: block;
+  width: 100%;
+  height: 300px;
+  border: 1px solid var(--gold);
+}
+
+/* GALERI */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.gallery div {
+  aspect-ratio: 3/4;
+  background: linear-gradient(160deg,var(--green),#2a5a50);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(184,155,94,.4);
+  cursor: zoom-in;
+}
+
+.gallery img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .45s ease;
+}
+
+.gallery div:hover img { transform: scale(1.045); }
+
+/* LIGHTBOX */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(8,18,16,.94);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 64px 54px;
+}
+
+.lightbox.open { display: flex; }
+
+.lightbox img {
+  max-width: min(100%,1100px);
+  max-height: 82vh;
+  object-fit: contain;
+  border: 1px solid rgba(217,199,156,.55);
+}
+
+.lightbox button {
+  position: absolute;
+  border: 1px solid var(--gold-soft);
+  background: var(--green);
+  color: var(--ivory);
+  cursor: pointer;
+  font: inherit;
+}
+
+.lightbox-close {
+  top: 18px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  font-size: 28px;
+}
+
+.lightbox-prev, .lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 56px;
+  font-size: 30px;
+}
+
+.lightbox-prev { left: 14px; }
+.lightbox-next { right: 14px; }
+
+.lightbox-count {
+  position: absolute;
+  bottom: 18px;
+  color: var(--ivory);
+  text-align: center;
+  width: 100%;
+}
+
+/* HADIAH */
+.gift {
+  border: 1px solid var(--gold);
+  padding: 26px 20px;
+  margin-top: 20px;
+}
+
+.gift b {
+  font-size: 22px;
+  color: var(--gold);
+}
+
+.gift .no {
+  font-size: 30px;
+  letter-spacing: .08em;
+}
+
+/* RSVP */
+form {
+  display: grid;
+  gap: 14px;
+  max-width: 420px;
+  margin: 26px auto 0;
+  text-align: left;
+}
+
+label {
+  font-size: 16px;
+  color: var(--gold-soft);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--gold);
+  background: rgba(246,242,234,.07);
+  color: var(--ivory);
+  font: inherit;
+  font-size: 18px;
+}
+
+select option { color: #222; }
+
+/* FOOTER DAN NAVIGASI */
+footer {
+  background: var(--green);
+  color: var(--gold-soft);
+  text-align: center;
+  padding: 30px 28px 110px;
+}
+
+footer .script {
+  font-size: 46px;
+  color: var(--gold);
+}
+
+nav {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translate(-50%,120px);
+  z-index: 40;
+  display: flex;
+  background: var(--green);
+  border: 1px solid var(--gold);
+  padding: 4px 6px;
+  transition: transform .8s ease;
+  max-width: 96vw;
+  overflow-x: auto;
+}
+
+.shown nav { transform: translate(-50%,0); }
+
+nav a {
+  color: var(--gold-soft);
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 9px;
+  white-space: nowrap;
+}
+
+#music {
+  position: fixed;
+  right: 14px;
+  top: 14px;
+  z-index: 40;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: var(--green);
+  color: var(--gold);
+  cursor: pointer;
+  display: none;
+}
+
+.shown #music.has { display: block; }
+
+/* SECTION DENGAN FOTO LATAR */
+.photo-bg {
+  position: relative;
+  background-color: var(--green);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--ivory);
+}
+
+.photo-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(12,28,25,.62);
+}
+
+.photo-bg > .wrap { position: relative; z-index: 1; }
+
+.photo-bg h2 { color: var(--ivory); }
+.photo-bg h2.script { color: var(--gold-soft); }
+
+.photo-bg .fam,
+.photo-bg .event {
+  background: rgba(12,28,25,.55);
+  border-color: var(--gold);
+  color: var(--ivory);
+}
+
+.photo-bg .fam h3,
+.photo-bg .event h3 { color: var(--gold-soft); }
+
+.photo-bg .fam .sib small,
+.photo-bg .fam .note { color: var(--gold-soft); }
+
+.photo-bg .btn.dark {
+  color: var(--ivory);
+  border-color: var(--gold);
+}
+
+.photo-bg .btn.dark:hover {
+  background: var(--gold);
+  color: var(--green);
+}
+
+.photo-bg .count { color: var(--ivory); }
+
+@media(min-width:760px) {
+  .events, .locs, .families { grid-template-columns: 1fr 1fr; }
+  .couple {
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
+  .gallery { grid-template-columns: repeat(3,1fr); }
+}
+
+@media(max-width:600px) {
+  .lightbox { padding: 64px 48px 58px; }
+  .lightbox img { max-height: 76vh; }
+  .photo-bg { min-height: 640px; }
+}
+</style>
+</head>
+
+<body class="locked">
+
+<!-- COVER -->
+<div id="cover">
+  <div class="cover-inner">
+    <p class="small">UNDANGAN PERNIKAHAN</p>
+    <h1 class="script cover-names">
+      <span id="c-n1"></span>&amp;<span id="c-n2"></span>
+    </h1>
+    <p class="small" id="c-date"></p>
+
+    <div class="guest">
+      <small>Kepada Yth. Bapak/Ibu/Saudara/i</small>
+      <strong id="guest">Tamu Undangan</strong>
+    </div>
+
+    <button class="btn" id="openBtn" type="button">Buka Undangan</button>
+  </div>
+</div>
+
+<button id="music" type="button">♫</button>
+<audio id="bgm" loop></audio>
+
+<main>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap reveal">
+    <p class="small">THE WEDDING OF</p>
+    <h2 class="script names">
+      <span id="h-n1"></span>
+      <em>&amp;</em>
+      <span id="h-n2"></span>
+    </h2>
+    <p class="date" id="h-date"></p>
+  </div>
+</section>
+
+<!-- MEMPELAI -->
+<section id="mempelai">
+  <div class="wrap wide reveal">
+    <h2 class="script" id="salam"></h2>
+    <div class="divider"></div>
+
+    <blockquote class="ayat" id="ayat" hidden>
+      <span id="ayat-teks"></span>
+      <cite id="ayat-ref"></cite>
+    </blockquote>
+
+    <p class="muted" id="opening"></p>
+    <div class="couple" id="couple"></div>
+  </div>
+</section>
+
+<!-- KELUARGA (latar foto) -->
+<section class="photo-bg" id="keluarga">
+  <div class="wrap wide reveal">
+    <h2 class="script">Keluarga Mempelai</h2>
+    <div class="divider"></div>
+    <div class="families" id="families"></div>
+  </div>
+</section>
+
+<!-- CERITA (otomatis disembunyikan kalau kosong) -->
+<section class="dark-bg" id="cerita">
+  <div class="wrap reveal">
+    <h2 class="script">Kisah Kami</h2>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ACARA (latar foto) -->
+<section class="photo-bg" id="acara">
+  <div class="wrap wide reveal">
+    <h2 class="script">Rangkaian Acara</h2>
+    <div class="divider"></div>
+    <div class="events" id="events"></div>
+
+    <h2 style="margin-top:56px">Menuju Hari Bahagia</h2>
+    <div class="count">
+      <div><b id="cd-d">0</b><span>Hari</span></div>
+      <div><b id="cd-h">0</b><span>Jam</span></div>
+      <div><b id="cd-m">0</b><span>Menit</span></div>
+      <div><b id="cd-s">0</b><span>Detik</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOKASI -->
+<section class="tint" id="lokasi">
+  <div class="wrap wide reveal">
+    <h2 class="script">Lokasi Acara</h2>
+    <div class="divider"></div>
+    <div class="locs" id="locs"></div>
+  </div>
+</section>
+
+<!-- GALERI -->
+<section class="dark-bg" id="galeri">
+  <div class="wrap wide reveal">
+    <h2 class="script">Galeri</h2>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX FOTO -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Tutup">&times;</button>
+  <button class="lightbox-prev" id="lightboxPrev" type="button" aria-label="Foto sebelumnya">&#10094;</button>
+  <img id="lightboxImage" src="" alt="Foto galeri">
+  <button class="lightbox-next" id="lightboxNext" type="button" aria-label="Foto berikutnya">&#10095;</button>
+  <div class="lightbox-count" id="lightboxCount"></div>
+</div>
+
+<!-- HADIAH -->
+<section id="hadiah">
+  <div class="wrap reveal">
+    <h2 class="script">Tanda Kasih</h2>
+    <div class="divider"></div>
+    <p id="gift-text"></p>
+    <div id="gifts"></div>
+  </div>
+</section>
+
+<!-- RSVP -->
+<section class="dark-bg" id="rsvp">
+  <div class="wrap reveal">
+    <h2 class="script">Konfirmasi Kehadiran</h2>
+    <div class="divider"></div>
+
+    <form id="rsvpForm">
+      <label>Nama</label>
+      <input id="f-name" type="text" placeholder="Nama Anda" required>
+
+      <label>Konfirmasi Kehadiran</label>
+      <select id="f-att" required>
+        <option value="">Pilih jawaban</option>
+        <option value="Hadir">Hadir</option>
+        <option value="Tidak hadir">Tidak hadir</option>
+      </select>
+
+      <label>Jumlah Tamu</label>
+      <input id="f-num" type="number" min="1" value="1" required>
+
+      <label>Ucapan dan Doa</label>
+      <textarea id="f-msg" rows="3" placeholder="Tulis ucapan Anda"></textarea>
+
+      <button class="btn" type="submit">Kirim Konfirmasi</button>
+    </form>
+  </div>
+</section>
+
+<!-- PENUTUP -->
+<section class="tint" id="penutup">
+  <div class="wrap reveal">
+    <h2 class="script">Terima Kasih</h2>
+    <div class="divider"></div>
+    <p id="closing"></p>
+    <h2 class="script" id="f-names"></h2>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>Dengan penuh cinta</p>
+  <div class="script" id="footer-names"></div>
+</footer>
+
+<nav>
+  <a href="#hero">Home</a>
+  <a href="#mempelai">Mempelai</a>
+  <a href="#acara">Acara</a>
+  <a href="#lokasi">Lokasi</a>
+  <a href="#galeri">Galeri</a>
+  <a href="#rsvp">RSVP</a>
+</nav>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* =========================================
+   TOMBOL BUKA UNDANGAN
+   (dipasang paling awal supaya selalu berfungsi)
+========================================= */
+$("openBtn").addEventListener("click", () => {
+  $("cover").classList.add("open");
+  document.body.classList.remove("locked");
+  document.body.classList.add("shown");
+  window.scrollTo(0, 0);
+
+  const audio = $("bgm");
+  if (audio.src) {
+    audio.play().catch(() => {});
+  }
+});
+
+/* =========================================
+   EDIT DATA UNDANGAN DI BAGIAN INI
+   Hati-hati: jangan hapus tanda kutip " dan koma ,
+========================================= */
+
+const CONFIG = {
+
+  salamPembuka: "Salam Sejahtera",
+
+  // Ayat Alkitab (opsional). Kosongkan "" kalau tidak ingin ditampilkan.
+  ayat: "Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan oleh manusia.",
+  ayatRujukan: "Matius 19:6",
+
+  // FOTO MEMPELAI: file harus berada sejajar dengan undangan.html
+  // dan namanya sama persis dengan yang ada di VS Code.
+  mempelai1: {
+    panggilan: "Mensy",
+    lengkap: "Klemensianus Damar",
+    anak: "Anak Ketiga",
+    foto: "foto_mensy.jpg"
+  },
+
+  mempelai2: {
+    panggilan: "Leni",
+    lengkap: "Helena Vilomena Iju",
+    anak: "Anak Pertama",
+    foto: "foto_leny.jpg"
+  },
+
+  // Saudara dan keterangan bersifat opsional.
+  // Kalau mau menampilkannya, tambahkan:
+  //   saudara: ["Nama Kakak", "Nama Adik"],
+  //   keterangan: "Beserta keluarga besar"
+  keluargaPria: {
+    judul: "Keluarga Mempelai Pria",
+    ayah: "Fransiskus Akon",
+    ibu: "Yuliana Ngina"
+  },
+
+  keluargaWanita: {
+    judul: "Keluarga Mempelai Wanita",
+    ayah: "Albertus Dan",
+    ibu: "Agata Nduet"
+  },
+
+  // Format tanggal: YYYY-MM-DDTHH:MM:SS (untuk hitung mundur)
+  tanggalUtama: "2026-11-27T09:00:00",
+  teksTanggal: "Jumat, 27 November 2026",
+
+  pembuka: "Dengan penuh syukur, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada hari bahagia kami.",
+
+  penutup: "Merupakan sukacita bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.",
+
+  // Kisah Kami: dikosongkan, jadi bagian ini tidak tampil.
+  // Kalau mau menampilkannya, isi seperti ini:
+  //   cerita: [
+  //     { tahun: "2019", judul: "Pertama Bertemu", teks: "Ceritanya di sini." }
+  //   ],
+  cerita: [],
+
+  // peta: biarkan "" supaya peta dicari otomatis dari isian "cari".
+  // Isi hanya kalau kamu punya link Google Maps (diawali https://).
+  acara: [
+    {
+      judul: "Pemberkatan Pernikahan",
+      waktu: "Jumat, 27 November 2026 · 09.00 WITA - Selesai",
+      tempat: "Gereja Paroki Santo Petrus Denpasar",
+      alamat: "Jalan Gn Batok Raya No 1 Tegal Harum, Kec. Denpasar Barat",
+      cari: "Gereja Katolik Santo Petrus, Denpasar",
+      peta: ""
+    },
+    {
+      judul: "Resepsi",
+      waktu: "Sabtu, 28 November 2026 · 19.00 WITA - Selesai",
+      tempat: "Warung Kakoel",
+      alamat: "Renon, Denpasar Selatan, Kota Denpasar, Bali 80226",
+      cari: "Warung Kakoel, Renon, Denpasar",
+      peta: ""
+    }
+  ],
+
+  // GALERI: foto1.jpg sampai foto12.jpg di dalam folder "foto"
+  galeri: Array.from({ length: 12 }, (_, i) => `foto/foto${i + 1}.jpg`),
+
+  // FOTO LATAR section Keluarga dan section Acara
+  // Kosongkan "" kalau mau latar hijau polos.
+  latarKeluarga: "foto/foto1.jpg",
+  latarAcara: "foto/foto4.jpg",
+
+  // POSISI FOTO LATAR (bagian foto yang dipertahankan saat terpotong)
+  // Format: "kiri-kanan atas-bawah"
+  //   "center 20%"  = agak ke atas (cocok kalau wajah di bagian atas)
+  //   "center top"  = paling atas
+  //   "center 50%"  = tengah
+  //   "30% center"  = geser ke kiri,  "70% center" = geser ke kanan
+  latarKeluargaPosisi: "center 20%",
+  latarAcaraPosisi: "center 20%",
+
+  teksHadiah: "Doa restu Anda adalah hadiah terbaik bagi kami. Namun jika ingin memberikan tanda kasih, dapat melalui:",
+
+  rekening: [
+    {
+      bank: "BCA",
+      nomor: "0490534342",
+      nama: "HELENA VILOMENA IJU"
+    }
+  ],
+
+  musik: "musik/musik/lagu.mp3",
+  whatsapp: "6281290510724"
+};
+
+/* =========================================
+   MENAMPILKAN DATA UNDANGAN
+========================================= */
+
+const m1 = CONFIG.mempelai1;
+const m2 = CONFIG.mempelai2;
+const kp = CONFIG.keluargaPria;
+const kw = CONFIG.keluargaWanita;
+
+["c-n1", "h-n1"].forEach(id => {
+  $(id).textContent = m1.panggilan;
+});
+
+["c-n2", "h-n2"].forEach(id => {
+  $(id).textContent = m2.panggilan;
+});
+
+["c-date", "h-date"].forEach(id => {
+  $(id).textContent = CONFIG.teksTanggal;
+});
+
+$("salam").textContent = CONFIG.salamPembuka;
+$("opening").textContent = CONFIG.pembuka;
+$("closing").textContent = CONFIG.penutup;
+$("gift-text").textContent = CONFIG.teksHadiah;
+
+$("f-names").textContent =
+  m1.panggilan + " & " + m2.panggilan;
+
+$("footer-names").textContent =
+  m1.panggilan + " & " + m2.panggilan;
+
+document.title =
+  "Undangan Pernikahan " + m1.panggilan + " & " + m2.panggilan;
+
+/* FOTO LATAR SECTION */
+if (CONFIG.latarKeluarga) {
+  $("keluarga").style.backgroundImage = `url("${CONFIG.latarKeluarga}")`;
+  $("keluarga").style.backgroundPosition = CONFIG.latarKeluargaPosisi || "center";
+}
+if (CONFIG.latarAcara) {
+  $("acara").style.backgroundImage = `url("${CONFIG.latarAcara}")`;
+  $("acara").style.backgroundPosition = CONFIG.latarAcaraPosisi || "center";
+}
+
+/* AYAT */
+if (CONFIG.ayat) {
+  $("ayat-teks").textContent = CONFIG.ayat;
+  $("ayat-ref").textContent = CONFIG.ayatRujukan || "";
+  $("ayat").hidden = false;
+}
+
+/* NAMA TAMU */
+const to = new URLSearchParams(location.search).get("to");
+
+if (to) {
+  $("guest").textContent = to;
+}
+
+/* MEMPELAI */
+const person = (m, k) => `
+  <div class="person">
+    <div class="avatar">
+      ${
+        m.foto
+        ? `<img src="${m.foto}" alt="${m.panggilan}">`
+        : `<div class="mono script">${m.panggilan.charAt(0)}</div>`
+      }
+    </div>
+    <div class="script nm">${m.panggilan}</div>
+    <div class="full">${m.lengkap}</div>
+    <p>${m.anak} dari Bapak ${k.ayah} &amp; Ibu ${k.ibu}</p>
+  </div>
+`;
+
+$("couple").innerHTML =
+  person(m1, kp) +
+  `<div class="script amp">&amp;</div>` +
+  person(m2, kw);
+
+/* KELUARGA */
+const fam = k => `
+  <div class="fam">
+    <h3 class="script">${k.judul}</h3>
+    <div class="parent">Bapak ${k.ayah}</div>
+    <div class="and script">&amp;</div>
+    <div class="parent">Ibu ${k.ibu}</div>
+    ${
+      k.saudara && k.saudara.length
+      ? `<div class="sib">
+          <small>Saudara</small>
+          ${k.saudara.map(s => `<span>${s}</span>`).join("")}
+        </div>`
+      : ""
+    }
+    ${k.keterangan ? `<p class="note">${k.keterangan}</p>` : ""}
+  </div>
+`;
+
+$("families").innerHTML = fam(kp) + fam(kw);
+
+/* CERITA (disembunyikan kalau kosong) */
+if (CONFIG.cerita && CONFIG.cerita.length) {
+  $("timeline").innerHTML = CONFIG.cerita.map(c => `
+    <div class="tl">
+      <b>${c.tahun}</b>
+      <h3>${c.judul}</h3>
+      <p>${c.teks}</p>
+    </div>
+  `).join("");
+} else {
+  $("cerita").style.display = "none";
+}
+
+/* ACARA */
+$("events").innerHTML = CONFIG.acara.map(a => `
+  <div class="event">
+    <h3 class="script">${a.judul}</h3>
+    <p class="when">${a.waktu}</p>
+    <p class="place">
+      <b>${a.tempat}</b><br>
+      ${a.alamat}
+    </p>
+    <a class="btn dark" href="#lokasi">Lihat Lokasi</a>
+  </div>
+`).join("");
+
+/* LOKASI GOOGLE MAPS */
+$("locs").innerHTML = CONFIG.acara.map(a => {
+  const q = encodeURIComponent(a.cari || (a.tempat + " " + a.alamat));
+
+  const link = a.peta ||
+    `https://www.google.com/maps/search/?api=1&query=${q}`;
+
+  return `
+    <div class="loc">
+      <h3 class="script">${a.judul}</h3>
+      <p>
+        <b>${a.tempat}</b><br>
+        ${a.alamat}
+      </p>
+      <iframe
+        src="https://maps.google.com/maps?q=${q}&hl=id&z=16&output=embed"
+        loading="lazy"
+        title="Peta ${a.judul}">
+      </iframe>
+      <a class="btn dark" href="${link}" target="_blank" rel="noopener">
+        Buka Google Maps
+      </a>
+    </div>
+  `;
+}).join("");
+
+/* =========================================
+   GALERI FOTO
+========================================= */
+
+const fotos = CONFIG.galeri.filter(Boolean);
+
+$("gallery").innerHTML = fotos.length
+  ? fotos.map((foto, index) => `
+      <div>
+        <img
+          src="${foto}"
+          alt="galeri ${index + 1}"
+          loading="lazy"
+          data-gallery-index="${index}">
+      </div>
+    `).join("")
+  : `<p class="muted">Tambahkan foto pada bagian CONFIG.galeri.</p>`;
+
+/* =========================================
+   LIGHTBOX FOTO
+========================================= */
+
+const lightbox = $("lightbox");
+const lightboxImage = $("lightboxImage");
+
+let activePhoto = 0;
+
+function showPhoto(index) {
+  if (!fotos.length) return;
+
+  activePhoto = (index + fotos.length) % fotos.length;
+
+  lightboxImage.src = fotos[activePhoto];
+  lightboxImage.alt = `Foto galeri ${activePhoto + 1}`;
+
+  $("lightboxCount").textContent =
+    `${activePhoto + 1} / ${fotos.length}`;
+}
+
+function openLightbox(index) {
+  showPhoto(index);
+  lightbox.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  lightbox.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+/* Klik foto untuk memperbesar */
+$("gallery").addEventListener("click", e => {
+  const img = e.target.closest("img[data-gallery-index]");
+
+  if (img) {
+    openLightbox(Number(img.dataset.galleryIndex));
+  }
+});
+
+/* Tombol lightbox */
+$("lightboxClose").addEventListener("click", closeLightbox);
+
+$("lightboxPrev").addEventListener("click", () => {
+  showPhoto(activePhoto - 1);
+});
+
+$("lightboxNext").addEventListener("click", () => {
+  showPhoto(activePhoto + 1);
+});
+
+/* Klik bagian luar foto untuk menutup */
+lightbox.addEventListener("click", e => {
+  if (e.target === lightbox) {
+    closeLightbox();
+  }
+});
+
+/* Keyboard */
+document.addEventListener("keydown", e => {
+  if (!lightbox.classList.contains("open")) return;
+
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") showPhoto(activePhoto - 1);
+  if (e.key === "ArrowRight") showPhoto(activePhoto + 1);
+});
+
+/* =========================================
+   HADIAH / REKENING
+========================================= */
+
+$("gifts").innerHTML = CONFIG.rekening.map(r => `
+  <div class="gift">
+    <b>${r.bank}</b>
+    <div class="no">${r.nomor}</div>
+    <div>${r.nama}</div>
+    <button class="btn dark" type="button" data-copy="${r.nomor}">
+      Salin Nomor
+    </button>
+  </div>
+`).join("");
+
+document.querySelectorAll("[data-copy]").forEach(button => {
+  button.addEventListener("click", () => {
+    navigator.clipboard.writeText(button.dataset.copy)
+      .then(() => {
+        button.textContent = "Tersalin";
+        setTimeout(() => { button.textContent = "Salin Nomor"; }, 1800);
+      })
+      .catch(() => {
+        alert("Silakan salin nomor: " + button.dataset.copy);
+      });
+  });
+});
+
+/* =========================================
+   MUSIK
+========================================= */
+
+const bgm = $("bgm");
+const mbtn = $("music");
+
+if (CONFIG.musik) {
+  bgm.src = CONFIG.musik;
+  mbtn.classList.add("has");
+}
+
+mbtn.addEventListener("click", () => {
+  if (bgm.paused) {
+    bgm.play();
+  } else {
+    bgm.pause();
+  }
+});
+
+/* ANIMASI SCROLL */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("in");
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: .12 });
+
+document.querySelectorAll(".reveal").forEach(el => {
+  io.observe(el);
+});
+
+/* =========================================
+   COUNTDOWN
+========================================= */
+
+const target = new Date(CONFIG.tanggalUtama).getTime();
+
+function tick() {
+  const d = Math.max(0, target - Date.now());
+
+  $("cd-d").textContent = Math.floor(d / 864e5);
+  $("cd-h").textContent = Math.floor(d % 864e5 / 36e5);
+  $("cd-m").textContent = Math.floor(d % 36e5 / 6e4);
+  $("cd-s").textContent = Math.floor(d % 6e4 / 1e3);
+}
+
+tick();
+setInterval(tick, 1000);
+
+/* =========================================
+   RSVP WHATSAPP
+========================================= */
+
+$("rsvpForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const pesan = `Halo, saya ${$("f-name").value}.
+Konfirmasi: ${$("f-att").value}
+Jumlah tamu: ${$("f-num").value}
+Ucapan: ${$("f-msg").value || "-"}`;
+
+  window.open(
+    `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(pesan)}`,
+    "_blank"
+  );
+});
+
+</script>
+</body>
+</html>
